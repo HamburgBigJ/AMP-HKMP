@@ -1,0 +1,48 @@
+# ===== Required Generic Module metadata (wie Fehlermeldung verlangte) =====
+GenericModule.Meta.AppConfigId=hkmp
+GenericModule.Meta.DisplayName=HKMP (Hollow Knight Multiplayer)
+GenericModule.Meta.Description=Standalone HKMP-Server. AMP lädt den neuesten Release von GitHub und startet HKMPServer.exe mit dem konfigurierten Port.
+GenericModule.Meta.DisplayImageSource=https://hkmp.org/favicon.ico
+GenericModule.Meta.OS=All
+
+# ===== Arbeitsverzeichnis/Start =====
+App.RootDir=.
+App.WorkingDir=.
+
+# Windows: direkt die EXE starten, nur Port als Arg
+App.ExecutableWin=HKMPServer.exe
+App.CommandLineArgsWin={{$ApplicationPort1}}
+
+# Linux: via Mono starten, EXE + Port
+App.ExecutableLinux=/usr/bin/mono
+App.CommandLineArgsLinux=HKMPServer.exe {{$ApplicationPort1}}
+
+# ===== Netzwerk =====
+App.ApplicationIPBinding=0.0.0.0
+App.SupportsIPv6=false
+App.ApplicationPort1=26950
+
+# ===== Konsole/Exit =====
+App.AdminMethod=STDIO
+App.HasReadableConsole=true
+App.HasWriteableConsole=true
+# HKMP kennt "exit" zum sauberen Beenden
+App.ExitMethod=CONSOLE
+App.ExitCommand=exit
+App.RapidStartup=true
+
+# ===== Updates (GitHub Release Auto-Download) =====
+App.UpdateSources=[
+  {
+    "UpdateStageName":"Download latest HKMP",
+    "UpdateSourcePlatform":"All",
+    "UpdateSource":"GithubRelease",
+    "UpdateSourceArgs":"Extremelyd1/HKMP",
+    "UnzipUpdateSource": true,
+    "OverwriteExistingFiles": true
+  }
+]
+
+# ===== Sichtbare Settings in AMP =====
+# (Mapping kommt in *config.json, hier ein Info-Feld)
+App.AppSettings={"ServerPort":"{{$ApplicationPort1}}"}

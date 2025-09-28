@@ -1,0 +1,24 @@
+{
+  "$schema": 1,
+  "Name": "HKMP (Hollow Knight Multiplayer)",
+  "Author": "YourName",
+  "IconUri": "https://hkmp.org/favicon.ico",
+  "Website": "https://github.com/Extremelyd1/HKMP",
+  "Category": "Game Servers",
+  "Tags": ["Hollow Knight", "Multiplayer", "HKMP"],
+  "Variables": [
+    {
+      "Name": "ApplicationPort1",
+      "Type": "Integer",
+      "Default": 26950,
+      "Min": 1,
+      "Max": 65535,
+      "DisplayName": "Server Port",
+      "Description": "TCP/UDP-Port für HKMP. Standard 26950."
+    }
+  ],
+  "Startup": {
+    "ReadyRegex": "",
+    "Notes": "Unter Linux Mono installieren (z.B. apt install mono-runtime)."
+  }
+}

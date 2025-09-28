@@ -1,0 +1,10 @@
+{
+  "Ports": [
+    {
+      "Name": "Game Port",
+      "Port": "{{$ApplicationPort1}}",
+      "Protocol": "TCP/UDP",
+      "Description": "Client-Verbindungen (Standard 26950)."
+    }
+  ]
+}
