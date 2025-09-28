@@ -1,11 +1,16 @@
 {
-  "id": "hkmp-generic",
-  "name": "HKMP (Hollow Knight Multiplayer)",
-  "description": "Standalone HKMP server via AMP Generic module. Windows or Linux (Mono).",
-  "author": "you",
-  "origin": "https://github.com/Extremelyd1/HKMP",
-  "prefix": "HKMP",
-  "url": "https://extremelyd1.github.io/HKMP/",
-  "type": "Generic",
-  "supported_platforms": ["Windows", "Linux"]
+  "items": [
+    {
+      "id": "hkmp-windows",
+      "name": "HKMP — Windows",
+      "description": "HKMP standalone server (Windows).",
+      "type": "Generic"
+    },
+    {
+      "id": "hkmp-linux",
+      "name": "HKMP — Linux (Mono)",
+      "description": "HKMP standalone server (Linux via Mono).",
+      "type": "Generic"
+    }
+  ]
 }
