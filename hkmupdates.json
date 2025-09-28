@@ -1,8 +1,0 @@
-{
-  "Update": {
-    "Source": "GithubRelease",
-    "Args": "Extremelyd1/HKMP",
-    "Unzip": true,
-    "Overwrite": true
-  }
-}
