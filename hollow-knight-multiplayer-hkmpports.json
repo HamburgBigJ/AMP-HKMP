@@ -1,1 +1,9 @@
-[]
+[
+    {
+        "Name": "GamePort1",
+        "DisplayName": "Game Port",
+        "Description": "Primary port used for HKMP player connections.",
+        "Protocol": "UDP",
+        "DefaultValue": 27009
+    }
+]
