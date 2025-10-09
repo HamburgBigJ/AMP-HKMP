@@ -101,7 +101,32 @@ App.ExecutableLinux=/usr/bin/wine
 App.LinuxCommandLineArgs="./HKMPServer.exe" {{$GamePort1}}
 
 # Include the ports + update sources JSON below
-App.Ports=@IncludeJson[hollow-knight-multiplayer-hkmpports.json]
+App.Ports=[
+  {
+    "Name": "GamePort1",
+    "DisplayName": "HKMP Port",
+    "Description": "Primary server port for HKMP",
+    "Protocol": "Both",
+    "Default": 26950,
+    "TCP": true,
+    "UDP": true,
+    "IsOptional": false,
+    "IsPrimary": true,
+    "ClientCanChange": true
+  },
+  {
+    "Name": "RemoteAdminPort",
+    "DisplayName": "Remote Admin (AMP)",
+    "Description": "AMP’s own remote admin port",
+    "Protocol": "TCP",
+    "Default": 8081,
+    "TCP": true,
+    "UDP": false,
+    "IsOptional": true,
+    "IsPrimary": false,
+    "ClientCanChange": false
+  }
+]
 App.UpdateSources=@IncludeJson[hollow-knight-multiplayer-hkmpupdates.json]
 
 # Wine-friendly environment (used only on Linux)
