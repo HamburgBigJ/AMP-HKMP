@@ -1,84 +1,112 @@
 Meta.DisplayName=Hollow Knight Multiplayer (HKMP)
-Meta.Description=HKMP Server
+Meta.Description=HKMP standalone server
 Meta.Arch=x86_64
 Meta.Author=HamburgBigJ - Made with AMP Config Generator
-Meta.URL=
+Meta.URL=https://github.com/Extremelyd1/HKMP
 Meta.MinAMPVersion=2.4.6.6
+
+# We’ll keep Wine support available, but this runs natively on Windows.
 Meta.SpecificDockerImage=cubecoders/ampbase:wine
 Meta.DockerRequired=False
 Meta.ContainerPolicy=Supported
-Meta.ContainerPolicyReason=
-Meta.Prerequisites=[]
-Meta.EndpointURIFormat=steam://connect/{ip}:{{GenericModule.App.Ports.GamePort1}}
-Meta.AppConfigId=f327d60b-a1cd-4146-b03d-346abb328148
+Meta.ContainerPolicyReason=Runs via Wine on Linux; native .exe on Windows.
+Meta.Prerequsites=[]
+
+# Steam query is not used by HKMP, so drop the Steam endpoint.
+Meta.EndpointURIFormat=
+Meta.AppConfigId=021f9d18-94f1-48bc-8f2e-5ee1ead7219b
+
 App.AdminMethod=STDIO
 App.HasReadableConsole=true
 App.HasWritableConsole=true
 App.DisplayName=Hollow Knight Multiplayer (HKMP)
-App.CommandLineArgs={{GenericModule.App.Ports.GamePort1}}
-App.WindowsCommandLineArgs=
-App.CommandLineParameterFormat={1}
-App.CommandLineParameterDelimiter= 
+
+# HKMP expects a single positional arg: the port.
+# We feed the AMP port token so Windows runs "HKMPServer.exe 26950" etc.
+App.CommandLineArgs={{$GamePort1}}
+App.WindowsCommandLineArgs={{$GamePort1}}
+
+# Not used (HKMP doesn’t take --key=value pairs)
+App.CommandLineParameterFormat=--{0}={1}
+App.CommandLineParameterDelimiter=
+
 App.RapidStartup=false
 App.ApplicationReadyMode=Immediate
-App.ExitMethod=OS_CLOSE
-App.ExitString=stop
-App.ExitTimeout=30
-App.ExitFile=app_exit.lck
+App.ExitMethod=SIGKILL
+App.ExitString=
+App.ExitTimeout=15
+App.ExitFile=
 App.SupportsLiveSettingsChanges=False
-App.LiveSettingChangeCommandFormat=set {0} "{1}"
+App.LiveSettingChangeCommandFormat=
 App.ApplicationIPBinding=0.0.0.0
-App.AdminPortRef=
-App.UniversalSleepApplicationUDPPortRef=GamePort1
+
+# Primary port is our single game port
+App.AdminPortRef=RemoteAdminPort
 App.PrimaryApplicationPortRef=GamePort1
-App.UniversalSleepSteamQueryPortRef=GamePort1
+
+# Universal Sleep / Query not used by HKMP – clear them
+App.UniversalSleepApplicationUDPPortRef=
+App.UniversalSleepSteamQueryPortRef=
+
 App.MaxUsers=8
 App.UseRandomAdminPassword=True
 App.RemoteAdminPassword=
 App.AdminLoginTransform=None
-App.RCONConnectDelaySeconds=30
-App.RCONConnectRetrySeconds=15
-App.RCONHeartbeatCommand=ping
+App.RCONConnectDelaySeconds=0
+App.RCONConnectRetrySeconds=0
+App.RCONHeartbeatCommand=
 App.RCONHeartbeatMinutes=0
 App.TelnetLoginFormat={0}
-App.SteamUpdateAnonymousLogin=True
+App.SteamUpdateAnonymousLogin=False
 App.SteamForceLoginPrompt=False
 App.SupportsUniversalSleep=False
 App.WakeupMode=Any
 App.TemplateMatchRegex={{(\$?[\w]+)}}
 App.MonitorChildProcess=False
-App.MonitorChildProcessWaitMs=1000
-App.MonitorChildProcessName=
-App.Compatibility=None
-App.SteamWorkshopDownloadLocation=
+
+# Log/console patterns (leave simple)
 Console.FilterMatchRegex=
 Console.FilterMatchReplacement=
-Console.ThrowawayMessageRegex=(WARNING|ERROR): Shader.+
-Console.UpdateAvailableRegex=^\[\d\d:\d\d:\d\d\] \[INFO\] A new server update is available! v[\d\.]+.$
+Console.ThrowawayMessageRegex=
+Console.UpdateAvailableRegex=
 Console.SuppressLogAtStart=False
 Console.ActivateLogRegex=
 Console.UserActions={}
 Console.SleepMode=False
 Console.SleepOnStart=False
-Console.SleepDelayMinutes=5
-Console.DozeDelay=2
-Console.AutoRetryCount=5
-Console.SleepStartThresholdSeconds=25
+Console.SleepDelayMinutes=0
+Console.DozeDelay=0
+Console.AutoRetryCount=3
+Console.SleepStartThresholdSeconds=0
 Console.AppReadyRegex=^$
 Console.UserJoinRegex=^$
 Console.UserLeaveRegex=^$
 Console.UserChatRegex=^$
+
+# Manifests/paths
 Meta.OS=3
 Meta.ConfigManifest=hollow-knight-multiplayer-hkmpconfig.json
 Meta.MetaConfigManifest=hollow-knight-multiplayer-hkmpmetaconfig.json
 Meta.ConfigRoot=hollow-knight-multiplayer-hkmp.kvp
-App.RootDir=./HKMPServer/
-Meta.DisplayImageSource=url:
-App.BaseDirectory=./HKMPServer/
-App.WorkingDir=.
-App.ExecutableWin=HKMPServer.exe
+
+# Base directories
+App.RootDir=./hollow-knight-multiplayer-hkmp/
+Meta.DisplayImageSource=url:https://hkmp.org/assets/hkmp-logo.png
+App.BaseDirectory=./hollow-knight-multiplayer-hkmp/serverfiles/
+App.WorkingDir=serverfiles
+
+# Executables for each platform
+App.ExecutableWin=serverfiles\HKMPServer.exe
 App.ExecutableLinux=/usr/bin/wine
-App.LinuxCommandLineArgs="HKMPServer.exe"
+App.LinuxCommandLineArgs="./HKMPServer.exe" {{$GamePort1}}
+
+# Include the ports + update sources JSON below
 App.Ports=@IncludeJson[hollow-knight-multiplayer-hkmpports.json]
 App.UpdateSources=@IncludeJson[hollow-knight-multiplayer-hkmpupdates.json]
-App.EnvironmentVariables={"LD_LIBRARY_PATH": "{{$FullBaseDir}}linux64:{{$FullRootDir}}linux64:%LD_LIBRARY_PATH%", "WINEPREFIX": "{{$FullRootDir}}.wine", "WINEARCH": "win64", "WINEDEBUG": "-all"}
+
+# Wine-friendly environment (used only on Linux)
+App.EnvironmentVariables={
+  "WINEPREFIX": "{{$FullRootDir}}.wine",
+  "WINEARCH": "win64",
+  "WINEDEBUG": "-all"
+}

@@ -1,13 +1,15 @@
 [
-    {
-        "UpdateStageName": "Download ....",
-        "UpdateSourcePlatform": "All",
-        "UpdateSource": "GithubRelease",
-        "UpdateSourceData": "HKMPServer.zip",
-        "UpdateSourceArgs": "Extremelyd1/HKMP",
-        "UnzipUpdateSource": true,
-        "OverwriteExistingFiles": true,
-        "DeleteAfterExtract": true,
-        "OneShot": false
-    }
+  {
+    "Name": "HKMP (GitHub - Latest)",
+    "Type": "GenericHTTP",
+    "DownloadURL": "https://github.com/Extremelyd1/HKMP/releases/latest/download/HKMPServer.zip",
+    "ExtractionMethod": "Zip",
+    "ExtractTo": "serverfiles",
+    "PurgeBeforeInstall": false,
+    "IsUpdate": true,
+    "LaunchAfterUpdate": false,
+    "Required": true,
+    "FileName": "HKMPServer.zip",
+    "UserAgent": "AMP-Downloader"
+  }
 ]
